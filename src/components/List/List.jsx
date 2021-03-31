@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router';
 import { getAllPost } from '../../redux/actions/postActions';
 import CommonCard from '../CommonCard';
 const List = ({ getAllPost, allPosts, loading }) => {
+  const history = useHistory();
   useEffect(() => {
     getAllPost();
   }, [getAllPost]);
   const onNewPostHandler = () => {
-    console.log(`Create new Post`);
+    history.push('/createPost');
   };
   return (
     <div className='container'>
@@ -16,7 +18,9 @@ const List = ({ getAllPost, allPosts, loading }) => {
           <h3>New Post</h3>
         </button>
       </div>
-      <div className='  row row-cols-1 row-cols-md-3'>{!loading && allPosts?.map((post) => <CommonCard key={post._id} {...post} />)}</div>
+      <div className='  row row-cols-1 row-cols-md-3'>
+        {!loading && allPosts?.reverse().map((post) => <CommonCard key={post._id} {...post} />)}
+      </div>
     </div>
   );
 };

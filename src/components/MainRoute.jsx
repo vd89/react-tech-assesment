@@ -12,7 +12,7 @@ const MainRoute = () => {
         <Route exact path='/' component={List} />
         <Route exact path='/createPost' component={CreateNew} />
         <Route exact path='/editPost' component={EditPost} />
-        <Route exact path='/individualPost' component={IndividualPost} />
+        <Route exact path='/individualPost/:id' component={IndividualPost} />
       </Switch>
     </React.Fragment>
   );

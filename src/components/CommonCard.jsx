@@ -1,11 +1,16 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 
-const CommonCard = ({ Title, Description, Image, createdAt, updatedAt, Comments, _id }) => {
+const CommonCard = ({ Title, Description, Image, createdAt, updatedAt, Comments, _id, individual }) => {
+  const history = useHistory();
   const onEditHandler = () => {
     console.log('edit handler');
   };
   const onDeleteHandler = () => {
     console.log('Delete handler');
+  };
+  const onPostViewHandler = () => {
+    history.push(`/individualPost/${_id}`);
   };
   return (
     <div className='card md-1 mt-5'>
@@ -15,13 +20,21 @@ const CommonCard = ({ Title, Description, Image, createdAt, updatedAt, Comments,
         <p className='card-subtitle'>Created: {new Date(createdAt).toDateString()} </p>
         <p className='card-subtitle'>Updated: {new Date(updatedAt).toDateString()} </p>
       </div>
-      <img src={Image} className='card-img-top' width='100%' height='200' alt='' />
+      <img
+        src={Image}
+        className='card-img-top'
+        width='100%'
+        height='200'
+        alt=''
+        onClick={onPostViewHandler}
+        style={{ cursor: 'pointer' }}
+      />
       <div className='card-body'>
         <p className='card-text'>{Description}</p>
         <h4>
-          <span className='bold'>{Comments.length} </span> Comments
+          <span className='bold'>{Comments?.length} </span> Comments
         </h4>
-        <div className='container '>
+        <div className='container' style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <button type='button' className='btn btn-outline-primary mr-2' onClick={onEditHandler}>
             Edit
           </button>
@@ -29,6 +42,14 @@ const CommonCard = ({ Title, Description, Image, createdAt, updatedAt, Comments,
             Delete
           </button>
         </div>
+        {individual
+          ? Comments.map((comment) => (
+              <div className='card-body' key={comment.id}>
+                <h5 className='card-text'>{comment.comment}</h5>
+                <p className='card-subtitle'>Created: {new Date(comment.createdAt).toDateString()}</p>
+              </div>
+            ))
+          : ''}
       </div>
     </div>
   );
