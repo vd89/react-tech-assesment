@@ -17,7 +17,7 @@ Assuming you are login with user id = 1;
 API resources
 =
 
-API base endpoint: https://60334e6aa223790017ad019e.mockapi.io/api/v1/
+API base endpoint: https://606312790133350017fd282e.mockapi.io/api/v1
 
 User Posts
 -
