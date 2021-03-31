@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import { createPost } from '../../redux/actions/postActions';
+import { createPost, getSinglePost, editPost } from '../../redux/actions/postActions';
 
-const CreateNew = ({ createPost }) => {
+const CreateNew = ({ createPost, edit, id, post, getSinglePost, editPost }) => {
   const history = useHistory();
+  useEffect(() => {
+    if (edit) {
+      getSinglePost(id);
+    }
+    setFormData({
+      Title: post?.Title,
+      Description: post?.Description,
+    });
+  }, [edit, getSinglePost, id, post?.Description, post?.Title]);
   const [image, setImage] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [imageName, setImageName] = useState('Upload');
   const [formData, setFormData] = useState({
     Title: '',
     Description: '',
   });
 
+  if (edit) {
+  }
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const onFileSelectHandler = (e) => {
+    
     setImage(e.target.files[0]);
     setImageName(e.target.files[0].name);
   };
@@ -26,6 +39,10 @@ const CreateNew = ({ createPost }) => {
     payload.append('Title', formData.Title);
     payload.append('Description', formData.Description);
 
+    if (edit) {
+      editPost(id, payload);
+      history.push('/');
+    }
     createPost(payload);
     history.push('/');
   };
@@ -39,6 +56,14 @@ const CreateNew = ({ createPost }) => {
   };
   return (
     <div className='container'>
+      <div className='row mt-5' style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <button className='btn btn-link' onClick={() => history.push('/')}>
+          <h3>Back</h3>
+        </button>
+        <button className='btn btn-link' onClick={() => history.push('/createPost')}>
+          <h3>New Post</h3>
+        </button>
+      </div>
       <div className='card mt-5'>
         <div className='card-header'>
           <h3>Create Post</h3>
@@ -77,4 +102,8 @@ const CreateNew = ({ createPost }) => {
   );
 };
 
-export default connect(null, { createPost })(CreateNew);
+const mapStateToProps = (store) => ({
+  post: store.postStates.post,
+});
+
+export default connect(mapStateToProps, { createPost, getSinglePost, editPost })(CreateNew);

@@ -46,3 +46,27 @@ export const getSinglePost = (id) => async (dispatch) => {
     });
   }
 };
+
+export const deletePost = (id) => async (dispatch) => {
+  try {
+    await Axios.delete(`/api/v1/posts/${id}`);
+    dispatch(getAllPost());
+  } catch (e) {
+    console.error(e);
+    dispatch({
+      type: NO_POST,
+    });
+  }
+};
+
+export const editPost = (id, formData) => async (dispatch) => {
+  try {
+    await Axios.patch(`/api/v1/posts/${id}`, formData, config);
+    dispatch(getAllPost());
+  } catch (e) {
+    console.error(e);
+    dispatch({
+      type: NO_POST,
+    });
+  }
+};

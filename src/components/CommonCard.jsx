@@ -1,13 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-
-const CommonCard = ({ Title, Description, Image, createdAt, updatedAt, Comments, _id, individual }) => {
+import { deletePost } from '../redux/actions/postActions';
+const CommonCard = ({ Title, Description, Image, createdAt, updatedAt, Comments, _id, individual, deletePost }) => {
   const history = useHistory();
   const onEditHandler = () => {
-    console.log('edit handler');
+    history.push(`/editPost/${_id}`);
   };
   const onDeleteHandler = () => {
-    console.log('Delete handler');
+    deletePost(_id);
   };
   const onPostViewHandler = () => {
     history.push(`/individualPost/${_id}`);
@@ -43,7 +44,7 @@ const CommonCard = ({ Title, Description, Image, createdAt, updatedAt, Comments,
           </button>
         </div>
         {individual
-          ? Comments.map((comment) => (
+          ? Comments?.map((comment) => (
               <div className='card-body' key={comment.id}>
                 <h5 className='card-text'>{comment.comment}</h5>
                 <p className='card-subtitle'>Created: {new Date(comment.createdAt).toDateString()}</p>
@@ -55,4 +56,4 @@ const CommonCard = ({ Title, Description, Image, createdAt, updatedAt, Comments,
   );
 };
 
-export default CommonCard;
+export default connect(null, { deletePost })(CommonCard);
